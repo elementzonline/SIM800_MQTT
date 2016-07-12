@@ -1,6 +1,5 @@
 #include "GSM_MQTT.h"
 #include <SoftwareSerial.h>
-
 String MQTT_HOST = "test.mosquitto.org";
 /*
    MQTT host address
@@ -31,7 +30,7 @@ void GSM_MQTT::OnConnect(void)
                     :Possible values (0,1,2)
                     :Default value 0
   */
-  subscribe(0, generateMessageID(), "SampleTopic", 1);
+  subscribe(0, _generateMessageID(), "SampleTopic", 1);
 
   
   /*  void publish(char DUP, char Qos, char RETAIN, unsigned int MessageID, char *Topic, char *Message);
@@ -52,7 +51,7 @@ void GSM_MQTT::OnConnect(void)
       Topic     :Publishing topic
       Message   :Publishing Message
   */
-/// publish(0, 0, 0, generateMessageID(), "SampleTopic", "Hello");
+//  publish(0, 0, 0, _generateMessageID(), "SampleTopic", "Hello");
 
 }
 void GSM_MQTT::OnMessage(char *Topic, int TopicLength, char *Message, int MessageLength)
@@ -83,7 +82,9 @@ void setup()
 {
   // initialize mqtt:
   // GSM modem should be connected to Harware Serial
+//  index =0;
   MQTT.begin();
+  
   /*
      You can write your code here
   */
