@@ -10,7 +10,7 @@ String MQTT_PORT = "1883";
 */
 SoftwareSerial mySerial(10, 11); // RX, TX
 /*
- * Software Serial throw which mqtt events log is printed
+ * Software Serial, through which mqtt event log is printed
  */
 void GSM_MQTT::OnConnect(void)
 {
@@ -81,8 +81,7 @@ GSM_MQTT MQTT(20);
 void setup()
 {
   // initialize mqtt:
-  // GSM modem should be connected to Harware Serial
-//  index =0;
+  // GSM modem should be connected to Hardware Serial
   MQTT.begin();
   
   /*
