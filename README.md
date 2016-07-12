@@ -7,5 +7,5 @@
 * Ping and KeepAlive
 * QoS 0,1,2*
 
-To Do: 
+## To Do: 
 1) QoS 2 implementation
