@@ -1,6 +1,5 @@
 #include "GSM_MQTT.h"
 #include <SoftwareSerial.h>
-
 String MQTT_HOST = "test.mosquitto.org";
 /*
    MQTT host address
@@ -11,7 +10,7 @@ String MQTT_PORT = "1883";
 */
 SoftwareSerial mySerial(10, 11); // RX, TX
 /*
- * Software Serial throw which mqtt events log is printed
+ * Software Serial through which mqtt events log is printed
  */
 void GSM_MQTT::OnConnect(void)
 {
@@ -31,7 +30,7 @@ void GSM_MQTT::OnConnect(void)
                     :Possible values (0,1,2)
                     :Default value 0
   */
-//  subscribe(0, generateMessageID(), "SampleTopic", 1);
+//  subscribe(0, _generateMessageID(), "SampleTopic", 1);
 
   
   /*  void publish(char DUP, char Qos, char RETAIN, unsigned int MessageID, char *Topic, char *Message);
@@ -52,7 +51,7 @@ void GSM_MQTT::OnConnect(void)
       Topic     :Publishing topic
       Message   :Publishing Message
   */
-  publish(0, 0, 0, generateMessageID(), "SampleTopic", "Hello");
+  publish(0, 0, 0, _generateMessageID(), "SampleTopic", "Hello");
 
 }
 void GSM_MQTT::OnMessage(char *Topic, int TopicLength, char *Message, int MessageLength)
@@ -68,10 +67,10 @@ void GSM_MQTT::OnMessage(char *Topic, int TopicLength, char *Message, int Messag
      Message      :The containing array
      MessageLength:Number of characters in message
   */
-//  mySerial.println(TopicLength);
-//  mySerial.println(Topic);
-//  mySerial.println(MessageLength);
-//  mySerial.println(Message);
+  mySerial.println(TopicLength);
+  mySerial.println(Topic);
+  mySerial.println(MessageLength);
+  mySerial.println(Message);
 
 }
 GSM_MQTT MQTT(20);
@@ -82,8 +81,9 @@ GSM_MQTT MQTT(20);
 void setup()
 {
   // initialize mqtt:
-  // GSM modem should be connected to Harware Serial
+  // GSM modem should be connected to Hardware Serial
   MQTT.begin();
+  
   /*
      You can write your code here
   */
