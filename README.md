@@ -1,11 +1,22 @@
 # SIM800_MQTT
 
 # Supported methods
-* MQTT connect - with Username and Password
+* MQTT connect
+*     - with Auto Connect
+*     - with OnConnect CallBack function
+*     - optional username and password
+*     - optional will topic
 * Publish
-* Subscribe
-* Ping and KeepAlive
-* QoS 0,1,2*
+*     - selectable QoS levels
+*     - selectable RETAIN flag
+* Subscribe 
+*     - with OnMessage CallBack function
+*           - with Topic, TopicLength, Message, MessageLength
+*     - selectable QoS levels
+* Unsubscribe
+* Disconnect
+* Ping (Automatic) and KeepAlive
+* QoS 0,1,2
 
 ## To Do: 
-1) QoS 2 implementation
+
