@@ -83,13 +83,15 @@ class GSM_MQTT
 
     GSM_MQTT(unsigned long KeepAlive);
     void begin(void);
-    void connect(char *ClientIdentifier, char UserNameFlag, char PasswordFlag, char WillRetain, char WillQoS, char WillFlag, char CleanSession, char *WillTopic, char *WillMessage, char *UserName, char *Password);
+    void connect(char *ClientIdentifier, char UserNameFlag, char PasswordFlag, char *UserName, char *Password, char CleanSession, char WillFlag, char WillQoS, char WillRetain, char *WillTopic, char *WillMessage);
     void publish(char DUP, char Qos, char RETAIN, unsigned int MessageID, char *Topic, char *Message);
     void subscribe(char DUP, unsigned int MessageID, char *SubTopic, char SubQoS);
     void unsubscribe(char DUP, unsigned int MessageID, char *SubTopic);
     void disconnect(void);
     void processing(void);
+    bool available(void);
 
+    void AutoConnect(void);
     void OnConnect(void);
     void OnMessage(char *Topic, int TopicLength, char *Message, int MessageLength);
 
