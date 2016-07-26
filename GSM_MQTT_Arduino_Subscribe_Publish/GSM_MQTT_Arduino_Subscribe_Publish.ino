@@ -65,7 +65,7 @@ void GSM_MQTT::OnConnect(void)
      This function is called when mqqt connection is established.
      put your subscription publish codes here.
   */
-  //  subscribe(0, _generateMessageID(), "SampleTopic", 1);
+  subscribe(0, _generateMessageID(), "SampleTopic", 1);
   /*    void subscribe(char DUP, unsigned int MessageID, char *SubTopic, char SubQoS);
           DUP       :This flag is set when the client or server attempts to re-deliver a SUBSCRIBE message
                     :This applies to messages where the value of QoS is greater than zero (0)
