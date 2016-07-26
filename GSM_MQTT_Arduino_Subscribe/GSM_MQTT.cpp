@@ -242,7 +242,7 @@ void GSM_MQTT::_sendLength(int len)
     }
   }
 }
-void GSM_MQTT::connect(char *ClientIdentifier, char UserNameFlag, char PasswordFlag, char WillRetain, char WillQoS, char WillFlag, char CleanSession, char *WillTopic, char *WillMessage, char *UserName, char *Password)
+void GSM_MQTT::connect(char *ClientIdentifier, char UserNameFlag, char PasswordFlag, char *UserName, char *Password, char CleanSession, char WillFlag, char WillQoS, char WillRetain, char *WillTopic, char *WillMessage)
 {
   ConnectionAcknowledgement = NO_ACKNOWLEDGEMENT ;
   Serial.print(char(CONNECT * 16 ));
@@ -634,6 +634,10 @@ void GSM_MQTT::processing(void)
   }
   _ping();
 }
+bool GSM_MQTT::available(void)
+{
+  return MQTT_Flag;
+}
 void serialEvent()
 {
 
@@ -705,7 +709,7 @@ void serialEvent()
           GSM_Response = 4;
           MQTT.TCP_Flag = true;
           mySerial.println("MQTT.TCP_Flag = True");
-          MQTT.connect("qwerty", 0, 0, 0, 0, 0, 1, "", "", "", "");
+          MQTT.AutoConnect();
           MQTT.pingFlag = true;
           MQTT.tcpATerrorcount = 0;
         }
