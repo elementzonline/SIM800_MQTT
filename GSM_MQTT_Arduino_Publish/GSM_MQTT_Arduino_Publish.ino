@@ -141,7 +141,7 @@ void loop()
   /*
      You can write your code here
   */
-  if (MQTT.available)
+  if (MQTT.available())
   {
     /*
       if you want to do something when mqtt connection is live.
