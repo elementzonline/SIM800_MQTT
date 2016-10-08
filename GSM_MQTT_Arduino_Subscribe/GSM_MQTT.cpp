@@ -41,6 +41,10 @@ char GSM_MQTT::_sendAT(char *command, unsigned long waitms)
   GSM_Response = 0;
   Serial.write(command);
   unsigned long currentMillis = millis();
+
+  if (currentMillis < PrevMillis){
+  	PrevMillis = currentMillis;
+  }
   //  mySerial.println(PrevMillis);
   //  mySerial.println(currentMillis);
   while ( (GSM_Response == 0) && ((currentMillis - PrevMillis) < waitms) )
@@ -48,6 +52,9 @@ char GSM_MQTT::_sendAT(char *command, unsigned long waitms)
     //    delay(1);
     serialEvent();
     currentMillis = millis();
+    if (currentMillis < PrevMillis){
+  	PrevMillis = currentMillis;
+  }
   }
   return GSM_Response;
 }
@@ -59,6 +66,10 @@ char GSM_MQTT::sendATreply(char *command, char *replystr, unsigned long waitms)
   Serial.write(command);
   unsigned long currentMillis = millis();
 
+  if (currentMillis < PrevMillis){
+  	PrevMillis = currentMillis;
+  }
+
   //  mySerial.println(PrevMillis);
   //  mySerial.println(currentMillis);
   while ( (GSM_ReplyFlag == 0) && ((currentMillis - PrevMillis) < waitms) )
@@ -66,6 +77,9 @@ char GSM_MQTT::sendATreply(char *command, char *replystr, unsigned long waitms)
     //    delay(1);
     serialEvent();
     currentMillis = millis();
+    if (currentMillis < PrevMillis){
+  	PrevMillis = currentMillis;
+  }
   }
   return GSM_ReplyFlag;
 }
@@ -169,11 +183,18 @@ void GSM_MQTT::_tcpInit(void)
               {
                 unsigned long PrevMillis = millis();
                 unsigned long currentMillis = millis();
+
+                if (currentMillis < PrevMillis){
+				  	PrevMillis = currentMillis;
+				  }
                 while ( (GSM_Response != 4) && ((currentMillis - PrevMillis) < 20000) )
                 {
                   //    delay(1);
                   serialEvent();
                   currentMillis = millis();
+                  if (currentMillis < PrevMillis){
+				  	PrevMillis = currentMillis;
+				  }
                 }
               }
               break;
@@ -182,11 +203,17 @@ void GSM_MQTT::_tcpInit(void)
             {
               unsigned long PrevMillis = millis();
               unsigned long currentMillis = millis();
+              if (currentMillis < PrevMillis){
+			  	PrevMillis = currentMillis;
+			  }
               while ( (GSM_Response != 4) && ((currentMillis - PrevMillis) < 20000) )
               {
                 //    delay(1);
                 serialEvent();
                 currentMillis = millis();
+                if (currentMillis < PrevMillis){
+				  	PrevMillis = currentMillis;
+				  }
               }
               break;
             }
@@ -209,6 +236,9 @@ void GSM_MQTT::_ping(void)
   if (pingFlag == true)
   {
     unsigned long currentMillis = millis();
+	    if (currentMillis < _PingPrevMillis){
+	  	_PingPrevMillis = currentMillis;
+	  }	
     if ((currentMillis - _PingPrevMillis ) >= _KeepAliveTimeOut * 1000)
     {
       // save the last time you blinked the LED
