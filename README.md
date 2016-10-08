@@ -1,6 +1,5 @@
 # SIM800_MQTT
 
-<<<<<<< HEAD
 ## Experimental Branch
 =======
 #AutoConnect CallBack function
