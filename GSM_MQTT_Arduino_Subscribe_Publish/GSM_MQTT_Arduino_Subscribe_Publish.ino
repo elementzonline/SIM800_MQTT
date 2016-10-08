@@ -79,7 +79,7 @@ void GSM_MQTT::OnConnect(void)
                     :Default value 0
   */
 
-//  publish(0, 0, 0, _generateMessageID(), "SampleTopic", "Hello");
+  publish(0, 0, 0, _generateMessageID(), "SampleTopic", "Hello");
   /*  void publish(char DUP, char Qos, char RETAIN, unsigned int MessageID, char *Topic, char *Message);
       DUP       :This flag is set when the client or server attempts to re-deliver a PUBLISH message
                 :This applies to messages where the value of QoS is greater than zero (0)

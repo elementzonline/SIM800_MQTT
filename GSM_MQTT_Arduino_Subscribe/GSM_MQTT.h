@@ -17,6 +17,10 @@
 
 #include <avr/pgmspace.h>
 
+#define UART_BUFFER_LENGTH 300    //Maximum length allowed for UART data
+#define TOPIC_BUFFER_LENGTH 50    //Maximum length allowed Topic
+#define MESSAGE_BUFFER_LENGTH 250  //Maximum length allowed data
+
 // ######################################################################################################################
 #define CONNECT     1   //Client request to connect to Server                Client          Server
 #define CONNACK     2   //Connect Acknowledgment                             Server/Client   Server/Client
@@ -33,22 +37,6 @@
 #define PINGRESP    13  //PING Response                                      Server          Client
 #define DISCONNECT  14  //Client is Disconnecting                            Client          Server
 
-//MessageTypeStr[CONNECT]     = "Client request to connect to Server"
-//MessageTypeStr[CONNACK]     = "Connect Acknowledgment"
-//MessageTypeStr[PUBLISH]     = "Publish message"
-//MessageTypeStr[PUBACK]      = "Publish Acknowledgment"
-//MessageTypeStr[PUBREC]      = "Publish Received (assured delivery part 1)"
-//MessageTypeStr[PUBREL]      = "Publish Release (assured delivery part 2)"
-//MessageTypeStr[PUBCOMP]     = "Publish Complete (assured delivery part 3)"
-//MessageTypeStr[SUBSCRIBE]   = "Client Subscribe request"
-//MessageTypeStr[SUBACK]      = "Subscribe Acknowledgment"
-//MessageTypeStr[UNSUBSCRIBE] = "Client Unsubscribe request"
-//MessageTypeStr[UNSUBACK]    = "Unsubscribe Acknowledgment"
-//MessageTypeStr[PINGREQ]     = "PING Request"
-//MessageTypeStr[PINGRESP]    = "PING Response"
-//MessageTypeStr[DISCONNECT]  = "Client is Disconnecting"
-//The main class of MQTT library functions
-
 // QoS value bit 2 bit 1 Description
 //   0       0       0   At most once    Fire and Forget         <=1
 //   1       0       1   At least once   Acknowledged delivery   >=1
@@ -59,9 +47,6 @@
 #define QoS_Scale     2   // (()&QoS)/QoS_Scale
 #define RETAIN_Mask   1   // RETAIN flag
 
-//#define ProtocolName    "MQIsdp"
-//#define ProtocolVersion   3
-
 #define User_Name_Flag_Mask  128
 #define Password_Flag_Mask   64
 #define Will_Retain_Mask     32
@@ -70,68 +55,68 @@
 #define Will_Flag_Mask       4
 #define Clean_Session_Mask   2
 
-//CONNACKDict=dict()
-//CONNACKDict[0]="Connection Accepted"
-//CONNACKDict[1]="Connection Refused: unacceptable protocol version"
-//CONNACKDict[2]="Connection Refused: identifier rejected"
-//CONNACKDict[3]="Connection Refused: server unavailable"
-//CONNACKDict[4]="Connection Refused: bad user name or password"
-//CONNACKDict[5]="Connection Refused: not authorized"
-
 #define DISCONNECTED          0
 #define CONNECTED             1
-#define NO_ACKNOWLEDGEMENT  255   
+#define NO_ACKNOWLEDGEMENT  255
 
 class GSM_MQTT
 {
   public:
     volatile bool TCP_Flag = false;
-    volatile bool MQTT_Flag = false;
-    volatile int PublishIndex = 0;
-    volatile int MessageFlag = false;
-    volatile unsigned int LastMessaseID = 0;
-    volatile int ConnectionAcknowledgement =NO_ACKNOWLEDGEMENT ;
-//  char ProtocolName[7]="MQIsdp";
-  volatile char ProtocolVersion=3;
-    char Topic[50];
-    char Message[50];
-    volatile int TopicLength=0;
-    volatile int MessageLength=0;
-    volatile unsigned long PingPrevMillis = 0;
-    volatile bool pingFlag=false;
     volatile char GSM_ReplyFlag;
     char reply[10];
-      volatile char modemStatus=0;
-        volatile char tcpStatus=0;
-    //    volatile uint32_t length = 0;
-    volatile unsigned long KeepAliveTimeOut;
+    volatile bool pingFlag = false;
+    volatile char tcpATerrorcount = 0;
+    volatile bool MQTT_Flag = false;
+    volatile int ConnectionAcknowledgement = NO_ACKNOWLEDGEMENT ;
+    volatile int PublishIndex = 0;
+    char Topic[TOPIC_BUFFER_LENGTH];
+    volatile int TopicLength = 0;
+    char Message[MESSAGE_BUFFER_LENGTH];
+    volatile int MessageLength = 0;
+    volatile int MessageFlag = false;
+    volatile char modemStatus = 0;
+    volatile uint32_t index = 0;
+    volatile uint32_t length = 0, lengthLocal = 0;
+
+    char inputString[UART_BUFFER_LENGTH]; 
+
     GSM_MQTT(unsigned long KeepAlive);
     void begin(void);
-
-    void connect(char *ClientIdentifier, char UserNameFlag, char PasswordFlag, char WillRetain, char WillQoS, char WillFlag, char CleanSession, char *WillTopic, char *WillMessage, char *UserName, char *Password);
+    void connect(char *ClientIdentifier, char UserNameFlag, char PasswordFlag, char *UserName, char *Password, char CleanSession, char WillFlag, char WillQoS, char WillRetain, char *WillTopic, char *WillMessage);
     void publish(char DUP, char Qos, char RETAIN, unsigned int MessageID, char *Topic, char *Message);
+    void subscribe(char DUP, unsigned int MessageID, char *SubTopic, char SubQoS);
+    void unsubscribe(char DUP, unsigned int MessageID, char *SubTopic);
+    void disconnect(void);
+    void processing(void);
+    bool available(void);
+
+    void AutoConnect(void);
+    void OnConnect(void);
+    void OnMessage(char *Topic, int TopicLength, char *Message, int MessageLength);
+
     void publishACK(unsigned int MessageID);
     void publishREC(unsigned int MessageID);
     void publishREL(char DUP, unsigned int MessageID);
     void publishCOMP(unsigned int MessageID);
-    void subscribe(char DUP, unsigned int MessageID, char *SubTopic, char SubQoS);
-    void unsubscribe(char DUP, unsigned int MessageID, char *SubTopic);
-    void disconnect(void);
-    void sendUTFString(char *string);
-    void sendLength(int len);
-    void ping(void);
+
     void printMessageType(uint8_t Message);
     void printConnectAck(uint8_t Ack);
-    void OnConnect(void);
-    void OnMessage(char *Topic,int TopicLength,char *Message,int MessageLength);
+    char sendATreply(char *command, char *replystr, unsigned long waitms);
 
-    void tcpInit(void);
-    char sendAT(char *command,unsigned long waitms);
-    char sendATreply(char *command, char *replystr,unsigned long waitms);
-    unsigned int generateMessageID(void);
-    void processing(void);
   private:
+    volatile unsigned int _LastMessaseID = 0;
+    volatile char _ProtocolVersion = 3;
+    volatile unsigned long _PingPrevMillis = 0;
+    volatile char _tcpStatus = 0;
+    volatile char _tcpStatusPrev = 0;
+    volatile unsigned long _KeepAliveTimeOut;
 
+    void _sendUTFString(char *string);
+    void _sendLength(int len);
+    void _ping(void);
+    void _tcpInit(void);
+    char _sendAT(char *command, unsigned long waitms);
+    unsigned int _generateMessageID(void);
 };
-void KeepAlive(void);
 #endif /* GSM_MQTT_H_ */
