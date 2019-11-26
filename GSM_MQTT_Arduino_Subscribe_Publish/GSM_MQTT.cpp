@@ -861,6 +861,7 @@ void serialEvent()
           else if (ReceivedMessageType == PINGREQ)
           {
             MQTT.TCP_Flag = false;
+            MQTT.MQTT_flag = false;
             MQTT.pingFlag = false;
             mySerial.println("Disconnecting");
             MQTT.sendATreply("AT+CIPSHUT\r\n", ".", 4000) ;
