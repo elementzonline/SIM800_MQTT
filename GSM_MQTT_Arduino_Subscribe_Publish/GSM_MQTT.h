@@ -67,6 +67,7 @@ class GSM_MQTT
     char reply[10];
     volatile bool pingFlag = false;
     volatile char tcpATerrorcount = 0;
+    volatile bool pingSent = false;
     volatile bool MQTT_Flag = false;
     volatile int ConnectionAcknowledgement = NO_ACKNOWLEDGEMENT ;
     volatile int PublishIndex = 0;
