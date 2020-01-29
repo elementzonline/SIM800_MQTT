@@ -213,8 +213,21 @@ void GSM_MQTT::_ping(void)
     {
       // save the last time you blinked the LED
       _PingPrevMillis = currentMillis;
+      if(pingSent){
+        mySerial.println("Ping failed");
+        disconnect();
+        MQTT.TCP_Flag = false;
+        MQTT.MQTT_Flag = false;
+        MQTT.pingFlag = false;
+        MQTT.sendATreply("AT+CIPSHUT\r\n", ".", 4000);
+        MQTT.modemStatus = 0;
+        pingSent = false;
+        return;
+      }
       Serial.print(char(PINGREQ * 16));
       _sendLength(0);
+      pingSent = true;
+      mySerial.println("pingSent = true");
     }
   }
 }
@@ -511,6 +524,8 @@ void GSM_MQTT::printMessageType(uint8_t Message)
       }
     case PINGRESP:
       {
+        pingSent = false;
+        mySerial.println("pingSent = false");
         int k, len = strlen_P(PINGRESPMessage);
         char myChar;
         for (k = 0; k < len; k++)
