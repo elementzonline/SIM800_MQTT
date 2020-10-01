@@ -16,12 +16,12 @@
 * You can call subscription and publish functions inside it (according to your need).
 
 
-# publish function
+# Publish function
 * This function can be used to publish messages to different topics.
 * You can select  QoS levels and RETAIN flag according to your need.
 
 
-# subscribe function
+# Subscribe function
 * This function can be used to subscribe messages from different topics.
 
 
@@ -43,7 +43,7 @@
 * return true when connection with mqtt brocker is existing
 
 
-# Other Features
+# Other Features :
 * You can specify your KeepAlive duration while initializing.
 * Ping requests are sent and received automatically.
 * QoS 0,1,2
