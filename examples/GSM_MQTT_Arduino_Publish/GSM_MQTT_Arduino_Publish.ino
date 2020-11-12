@@ -1,5 +1,6 @@
 #include "GSM_MQTT.h"
 #include <SoftwareSerial.h>
+
 String MQTT_HOST = "test.mosquitto.org";
 /*
    MQTT host address
