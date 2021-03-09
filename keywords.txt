@@ -1,0 +1,41 @@
+# Syntax Coloring Map For SIM800_MQTT
+
+GSM_MQTT                        KEYWORD1
+
+begin                           KEYWORD2
+connect                         KEYWORD2
+publish                         KEYWORD2
+subscribe                       KEYWORD2
+unsubscribe                     KEYWORD2
+disconnect                      KEYWORD2
+processing                      KEYWORD2
+available                       KEYWORD2
+AutoConnect                     KEYWORD2
+OnConnect                       KEYWORD2
+OnMessage                       KEYWORD2
+publishACK                      KEYWORD2
+publishREC                      KEYWORD2
+publishREL                      KEYWORD2
+publishCOMP                     KEYWORD2
+printMessageType                KEYWORD2
+printConnectAck                 KEYWORD2
+sendATreply                     KEYWORD2
+
+TCP_Flag                        KEYWORD3
+GSM_ReplyFlag                   KEYWORD3
+reply                           KEYWORD3
+pingFlag                        KEYWORD3
+tcpATerrorcount                 KEYWORD3
+pingSent                        KEYWORD3
+MQTT_Flag                       KEYWORD3
+ConnectionAcknowledgement       KEYWORD3
+PublishIndex                    KEYWORD3
+Topic                           KEYWORD3
+TopicLength                     KEYWORD3
+Message                         KEYWORD3
+MessageLength                   KEYWORD3
+MessageFlag                     KEYWORD3
+modemStatus                     KEYWORD3
+index                           KEYWORD3
+length                          KEYWORD3
+inputString                     KEYWORD3

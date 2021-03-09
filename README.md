@@ -48,5 +48,10 @@
 * Ping requests are sent and received automatically.
 * QoS 0,1,2
 
-## To Do: 
+## Note:
+Use the examples as a template.
 
+## To Do:
+* [ ] Move the functions Autoconnect, OnConnect and OnMessage to the source code
+* [ ] Implement a generic way to include external functions and their parameters to the funtions AutoConnect and OnConnect
+* [ ] Change the function OnMessage to be a callback
